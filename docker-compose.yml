@@ -1,0 +1,29 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/tasksdb
+      - MONGO_URI_TEST=mongodb://mongo-test:27017/tasksdb_test
+      - JWT_SECRET=supersecret
+      - JWT_REFRESH_SECRET=refreshsecret
+    depends_on:
+      - mongo
+      - mongo-test
+
+  mongo:
+    image: mongo:6
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+
+  mongo-test:
+    image: mongo:6
+    restart: always
+    volumes:
+      - mongo-test-data:/data/db
+
+volumes:
+  mongo-data:
+  mongo-test-data:
